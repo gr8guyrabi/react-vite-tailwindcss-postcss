@@ -6,6 +6,7 @@ import { BsInfoCircle } from 'react-icons/bs'
 
 import { TransactionContext } from '../context/TransactionContext';
 import { shortenAddress } from '../utils/shortenAddress';
+import Loader from './Loader';
 
 const companyCommonStyles = "min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white";
 
@@ -23,7 +24,7 @@ const Input = ({placeholder, type, value, name, handleChange}) => {
 }
 
 const Welcome = () => {
-    const {connectWallet, currentAccount, formData, sendTransaction, handleChange} = useContext(TransactionContext)
+    const {connectWallet, currentAccount, formData, sendTransaction, handleChange, isLoading} = useContext(TransactionContext)
     
     const handleSubmit = (ev) => {
         const { addressTo, amount, keyword, message } = formData;
@@ -104,14 +105,18 @@ const Welcome = () => {
                         <Input placeholder="Enter Message" type="text" name="message" handleChange={handleChange} />
 
                         <div className="h-[1px] w-full bg-gray-400 my-2" />
-                        
-                        <button
-                            type="button"
-                            onClick={handleSubmit}
-                            className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer"
-                        >
-                            Send Now
-                        </button>
+                        {isLoading ? (
+                            <Loader />
+                        ): (
+                            <button
+                                type="button"
+                                onClick={handleSubmit}
+                                className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer"
+                            >
+                                Send Now
+                            </button>
+
+                        )}
 
                     </div>
                 </div>
