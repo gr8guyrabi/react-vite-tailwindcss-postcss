@@ -41,8 +41,8 @@ export const TransactionProvider = ({ children }) => {
                 amount: parseInt(transaction.amount._hex) / (10 ** 18)
             }))
 
-            console.log(structuredTransactions)
             setTransactions(structuredTransactions)
+        
         } catch (error) {
             console.log(error)
 
@@ -59,10 +59,10 @@ export const TransactionProvider = ({ children }) => {
             if(accounts.length) {
                 setCurrentAccount(accounts[0]);
                 getAllTransactions();
+                
             } else {
                 console.log('No accounts found');
             }
-    
         } catch (error) {
             console.log(error);
 
@@ -91,7 +91,6 @@ export const TransactionProvider = ({ children }) => {
             setCurrentAccount(accounts[0]);
         } catch (error) {
             console.log(error);
-            
             throw new Error("No ethereum object.");
         }
     }
@@ -116,13 +115,11 @@ export const TransactionProvider = ({ children }) => {
             const transactionHash = await transactionContract.addToBlockchain(addressTo, parsedAmount, message, keyword)
 
             setIsLoading(true);
-            console.log(`Loading - ${transactionHash.hash}`);
             await transactionHash.wait();
             setIsLoading(false);
-            console.log(`Success - ${transactionHash.hash}`);
-
             const transactionCount = await transactionContract.getTransactionCount();
             setTransactionsCount(transactionCount.toNumber());
+            window.location.reload();
 
         } catch (error) {
             console.log(error);
